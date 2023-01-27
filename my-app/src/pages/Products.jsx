@@ -1,5 +1,5 @@
-import "../../styles/products.css";
-export default function Products(props) {
+import "../styles/products.css";
+export function Products(props) {
   console.log(props);
   const prod = props.product;
   return (
@@ -15,7 +15,7 @@ export default function Products(props) {
         <tr className="tr">
           <td>{item.name}</td>
           <td>{item.price}$</td>
-          <td>{item.sales}</td>
+          <td>{item.sale}</td>
           <td>{item.stock}</td>
           <td>{item.id}</td>
         </tr>

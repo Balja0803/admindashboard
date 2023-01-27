@@ -15,7 +15,6 @@ function App() {
   return (
     <div className="App">
       <Header />
-
       {data && <Main products={data} />}
     </div>
   );
