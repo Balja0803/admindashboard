@@ -1,3 +1,26 @@
-export function Users() {
-  return <div>Хэрэглэгчид</div>;
+export function Users(props) {
+  const users = props.data;
+  console.log(props);
+  return (
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>User name</th>
+            <th>User Role</th>
+            <th>User Id</th>
+          </tr>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{user.username}</td>
+                <td> {user.role} </td>
+                <td> {user.id} </td>
+              </tr>
+            ))}
+          </tbody>
+        </thead>
+      </table>
+    </div>
+  );
 }

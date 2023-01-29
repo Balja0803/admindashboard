@@ -10,9 +10,19 @@ import {
   Settings,
   Users,
 } from "./../pages";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Main(props) {
-  console.log(props.products);
+  const [users, setUsers] = useState();
+  useEffect(() => {
+    axios.get("http://localhost:2020/users").then((res) => {
+      setUsers(res.data);
+      console.log(res.data);
+    });
+  }, []);
+
   const myData = props.products;
   return (
     <div className="main">
@@ -26,7 +36,7 @@ export default function Main(props) {
           element={myData && <Products product={myData} />}
         />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={<Users />} />
+        <Route path="/users" element={users && <Users data={users} />} />
       </Routes>
     </div>
   );
