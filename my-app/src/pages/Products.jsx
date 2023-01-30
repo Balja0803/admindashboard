@@ -1,9 +1,23 @@
+import { useState } from "react";
+import Addproduct from "../components/subcomponents/Addproduct";
 import "../styles/products.css";
 
 export function Products(props) {
   const prod = props.product;
+  const [showProduct, setShowProduct] = useState(false);
+  const addProduct = () => {
+    if (showProduct) {
+      setShowProduct(false);
+    } else {
+      setShowProduct(true);
+    }
+  };
   return (
     <div>
+      <div>
+        <button onClick={addProduct}>Add Product</button>
+        {showProduct ? <Addproduct data={prod} /> : null}
+      </div>
       <table>
         <thead>
           <tr>
