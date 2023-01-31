@@ -1,22 +1,37 @@
 import { useState } from "react";
 import Addproduct from "../components/subcomponents/Addproduct";
 import "../styles/products.css";
+import { Button } from "bootstrap";
+import { Offcanvas } from "react-bootstrap";
 
 export function Products(props) {
   const prod = props.product;
   const [showProduct, setShowProduct] = useState(false);
-  const addProduct = () => {
-    if (showProduct) {
-      setShowProduct(false);
-    } else {
-      setShowProduct(true);
-    }
-  };
+  const handleClose = () => setShowProduct(false);
+  const handleShow = () => setShowProduct(true);
+  // const addProduct = () => {
+  //   if (showProduct) {
+  //     setShowProduct(false);
+  //   } else {
+  //     setShowProduct(true);
+  //   }
+  // };
   return (
     <div>
       <div>
-        <button onClick={addProduct}>Add Product</button>
-        {showProduct ? <Addproduct data={prod} /> : null}
+        <Button variant="primary" onClick={handleShow}>
+          Add Product
+        </Button>
+
+        <Offcanvas show={showProduct} onHide={handleClose}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Add product</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Addproduct />
+          </Offcanvas.Body>
+        </Offcanvas>
+        {/* {showProduct ? <Addproduct data={prod} /> : null} */}
       </div>
       <table>
         <thead>
