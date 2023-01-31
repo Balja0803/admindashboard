@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function Addproduct(props) {
   const [data, setData] = useState({
@@ -9,30 +10,51 @@ export default function Addproduct(props) {
     sale: "",
     description: "",
   });
-
+  function updateData(e) {
+    setData({ ...data, [e.target.name]: e.target.value });
+  }
   const submitHandler = (e) => {
     e.preventDefault();
+    axios.post("http://localhost:2020/products/add", data);
+
     console.log(data);
   };
   return (
     <div>
       <form onSubmit={submitHandler}>
         <label for="product-name">product name</label>
-        <input name="name" value={data.name} />
+        <input onChange={updateData} name="name" value={data.name} />
         <label for="price">Price</label>
-        <input type="number" name="price" value={data.price} />
+        <input
+          onChange={updateData}
+          type="number"
+          name="price"
+          value={data.price}
+        />
         <label for="stock">Stock</label>
-        <input type="text" name="stock" value={data.stock} />
-        <label for="categoy" name="category">
-          Category
-        </label>
-        <input />
+        <input
+          onChange={updateData}
+          type="text"
+          name="stock"
+          value={data.stock}
+        />
+        <label for="categoy">Category</label>
+        <input onChange={updateData} name="category" />
         <label for="sale">Sale</label>
-        <input type="number" name="sale" value={data.sale} />
+        <input
+          onChange={updateData}
+          type="number"
+          name="sale"
+          value={data.sale}
+        />
         <label for="description">Description</label>
-        <input name="description" value={data.description} />
+        <input
+          onChange={updateData}
+          name="description"
+          value={data.description}
+        />
         <button type="submit">Submit</button>
-        <intut type="button" value="cancel" />
+        <input onChange={updateData} type="button" value="cancel" />
       </form>
     </div>
   );
