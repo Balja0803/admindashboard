@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { bootstrap } from "bootstrap";
 
 export default function Addproduct() {
   const unique_id = uuid();
