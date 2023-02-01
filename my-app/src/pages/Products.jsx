@@ -2,14 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 import Addproduct from "../components/subcomponents/Addproduct";
 import "../styles/products.css";
-// import { Button } from "bootstrap";
-// import { Offcanvas } from "react-bootstrap";
 
 export function Products(props) {
   const prod = props.product;
   const [showProduct, setShowProduct] = useState(false);
-  // const handleClose = () => setShowProduct(false);
-  // const handleShow = () => setShowProduct(true);
+
   const addProduct = () => {
     if (showProduct) {
       setShowProduct(false);
@@ -25,15 +22,6 @@ export function Products(props) {
     <div>
       <div>
         <button onClick={addProduct}>Add Product</button>
-
-        {/* <Offcanvas show={showProduct} onHide={handleClose}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Add product</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <Addproduct />
-          </Offcanvas.Body>
-        </Offcanvas> */}
         {showProduct ? <Addproduct data={prod} /> : null}
       </div>
       <table>
@@ -65,6 +53,9 @@ export function Products(props) {
                 >
                   delete
                 </button>
+              </td>
+              <td>
+                <button>edit</button>
               </td>
             </tr>
           ))}
