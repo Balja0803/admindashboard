@@ -1,3 +1,9 @@
+import { Button } from "react-bootstrap";
+
 export function Moderators() {
-  return <div>Mods</div>;
+  return (
+    <div>
+      <Button> add</Button>
+    </div>
+  );
 }
