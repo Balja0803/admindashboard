@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import "../../styles/addproduct.css";
 
 export default function Addproduct() {
   const unique_id = uuid();
@@ -27,6 +28,7 @@ export default function Addproduct() {
     axios.post("http://localhost:2020/products/add", data);
 
     console.log(data);
+
     setData({
       name: "",
       price: "",
@@ -41,38 +43,38 @@ export default function Addproduct() {
   return (
     <div>
       <form className="add-product" onSubmit={submitHandler}>
-        <label for="name">product name</label>
+        <label htmlFor="name">Product name:</label>
         <input onChange={updateData} name="name" value={data.name} />
-        <label for="price">Price</label>
+        <label htmlFor="price">Price:</label>
         <input
           onChange={updateData}
           type="number"
           name="price"
           value={data.price}
         />
-        <label for="stock">Stock</label>
+        <label htmlFor="stock">Stock:</label>
         <input
           onChange={updateData}
           type="text"
           name="stock"
           value={data.stock}
         />
-        <label for="category">Category</label>
+        <label htmlFor="category">Category:</label>
         <input
           onChange={updateData}
           name="category"
           type="text"
           value={data.category}
         />
-        <label for="sale">Sale</label>
+        <label htmlFor="sale">Sale:</label>
         <input
           onChange={updateData}
           type="number"
           name="sale"
           value={data.sale}
         />
-        <label for="description">Description</label>
-        <input
+        <label htmlFor="description">Description:</label>
+        <textarea
           onChange={updateData}
           name="description"
           value={data.description}

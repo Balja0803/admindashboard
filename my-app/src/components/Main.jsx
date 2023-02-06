@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import axios from "axios";
 
 export default function Main(props) {
+  const refresh = props.refresh;
+  const setRefresh = props.setRefresh;
   const [users, setUsers] = useState();
   useEffect(() => {
     axios.get("http://localhost:2020/users").then((res) => {
@@ -33,7 +35,15 @@ export default function Main(props) {
         <Route path="/orders" element={<Orders />} />
         <Route
           path="/products"
-          element={myData && <Products product={myData} />}
+          element={
+            myData && (
+              <Products
+                product={myData}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
+            )
+          }
         />
         <Route path="/settings" element={<Settings />} />
         <Route path="/users" element={users && <Users data={users} />} />

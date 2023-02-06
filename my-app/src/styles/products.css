@@ -1,7 +1,6 @@
-table th td {
-  border: 1px solid;
-  background-color: aqua;
+table {
+  width: 100%;
 }
-.tr {
-  border: 1px solid;
+th {
+  text-align: left;
 }

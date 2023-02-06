@@ -10,16 +10,16 @@ export function Users(props) {
             <th>User Role</th>
             <th>User Id</th>
           </tr>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.username}</td>
-                <td> {user.role} </td>
-                <td> {user.id} </td>
-              </tr>
-            ))}
-          </tbody>
         </thead>
+        <tbody>
+          {users.map((user, index) => (
+            <tr key={index}>
+              <td>{user.username}</td>
+              <td> {user.role} </td>
+              <td> {user.id} </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
