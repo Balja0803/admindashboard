@@ -41,7 +41,7 @@ export function Products(props) {
   return (
     <div>
       <div>
-        <button onClick={addProduct}>Add Product</button>
+        <Button onClick={addProduct}>Add Product</Button>
         {showProduct ? <Addproduct data={prod} /> : null}
       </div>
       <table>
@@ -82,24 +82,6 @@ export function Products(props) {
                 </Button>
               </td>
             </tr>
-            <tr>
-              <Offcanvas show={showEdit} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  Some text as placeholder. In real life you can have the
-                  elements you have chosen. Like, text, images, lists, etc.
-                </Offcanvas.Body>
-              </Offcanvas>
-            </tr>
-            {/* <tr>
-              <EditProduct
-                product={item}
-                handleClose={handleClose}
-                showEdit={showEdit}
-              />
-            </tr> */}
           </tbody>
         ))}
       </table>
