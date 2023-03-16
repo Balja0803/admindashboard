@@ -10,22 +10,8 @@ import {
   Settings,
   Users,
 } from "./../pages";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
 
-export default function Main(props) {
-  const refresh = props.refresh;
-  const setRefresh = props.setRefresh;
-  const [users, setUsers] = useState();
-  useEffect(() => {
-    axios.get("http://localhost:2020/users").then((res) => {
-      setUsers(res.data);
-      console.log(res.data);
-    });
-  }, []);
-
-  const myData = props.products;
+export default function Main() {
   return (
     <div className="main">
       <Sidebar asideMenu={asideMenu} />
@@ -33,20 +19,9 @@ export default function Main(props) {
         <Route path="/" element={<Dashboard />} />
         <Route path="/moderator" element={<Moderators />} />
         <Route path="/orders" element={<Orders />} />
-        <Route
-          path="/products"
-          element={
-            myData && (
-              <Products
-                product={myData}
-                refresh={refresh}
-                setRefresh={setRefresh}
-              />
-            )
-          }
-        />
+        <Route path="/products" element={<Products />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={users && <Users data={users} />} />
+        <Route path="/users" element={<Users />} />
       </Routes>
     </div>
   );

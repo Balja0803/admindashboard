@@ -1,15 +1,32 @@
-.add-product {
-  width: 100%;
+.inputsAddItem {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  padding: 10px;
-  margin: 10px;
-  border-radius: 10px;
-  box-shadow: 3px 5px 12px 0px rgba(0, 0, 0, 0.71);
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 auto;
 }
-button {
-  width: 100px;
-  height: 25px;
+
+.inputAddItem {
+  padding: 5px;
+  border: 1px solid lightgray;
+  width: 48%;
+  outline: none;
+}
+
+.specBox {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 2px 2px 2px;
+}
+.specBox .removeBtn {
+  height: 35px;
+  margin-top: 8px;
+  margin-left: 8px;
+}
+
+.inputSpec {
+  padding: 5px;
+  border: 1px solid lightgray;
+  width: 44%;
+  outline: none;
 }

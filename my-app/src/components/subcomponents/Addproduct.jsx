@@ -1,88 +1,186 @@
-import axios from "axios";
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
 import "../../styles/addproduct.css";
+import { useState } from "react";
+import { Modal } from "react-bootstrap";
 
-export default function Addproduct() {
-  const unique_id = uuid();
-  const small_id = unique_id.slice(0, 8);
+import axios from "axios";
 
-  const [id, setId] = useState("");
-  const [data, setData] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    category: "",
-    sale: "",
-    description: "",
-    id: "",
-  });
-  function updateData(e) {
-    setData({ ...data, [e.target.name]: e.target.value });
-  }
+export default function AddProduct() {
+  const [show, setShow] = useState(false);
 
-  const submitHandler = (e) => {
+  const [specFields, setSpecFields] = useState([
+    { specKey: "", specValue: "" },
+  ]);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setId(small_id);
-    setData((data.id = `${id ? id : small_id}`));
-    axios.post("http://localhost:2020/products/add", data);
 
-    console.log(data);
-
-    setData({
-      name: "",
-      price: "",
-      stock: "",
-      category: "",
-      sale: "",
-      description: "",
-      id: "",
+    const specList = specFields.map((field) => {
+      let obj = {};
+      obj[field.specKey] = field.specValue;
+      return obj;
     });
-    setId("");
-  };
-  return (
-    <div>
-      <form className="add-product" onSubmit={submitHandler}>
-        <label htmlFor="name">Product name:</label>
-        <input onChange={updateData} name="name" value={data.name} />
-        <label htmlFor="price">Price:</label>
-        <input
-          onChange={updateData}
-          type="number"
-          name="price"
-          value={data.price}
-        />
-        <label htmlFor="stock">Stock:</label>
-        <input
-          onChange={updateData}
-          type="text"
-          name="stock"
-          value={data.stock}
-        />
-        <label htmlFor="category">Category:</label>
-        <input
-          onChange={updateData}
-          name="category"
-          type="text"
-          value={data.category}
-        />
-        <label htmlFor="sale">Sale:</label>
-        <input
-          onChange={updateData}
-          type="number"
-          name="sale"
-          value={data.sale}
-        />
-        <label htmlFor="description">Description:</label>
-        <textarea
-          onChange={updateData}
-          name="description"
-          value={data.description}
-        />
 
-        <button type="submit">Submit</button>
-        <input type="button" value="cancel" />
-      </form>
-    </div>
+    const newItem = {
+      name: e.target.name.value,
+      image: e.target.image.value,
+      description: e.target.description.value,
+      brand: e.target.brand.value,
+      spec: specList,
+      price: e.target.price.value,
+      stock: e.target.stock.value,
+      category: e.target.category.value,
+      sale: e.target.sale.value,
+    };
+    console.log(newItem);
+    setShow(false);
+
+    try {
+      axios
+        .post("http://localhost:2323/products/add", newItem)
+        .then(() => console.log("POST done"));
+    } catch (error) {
+      console.log(error.message);
+    }
+    window.location.reload();
+  };
+
+  const addSpecField = (e) => {
+    let newfield = { specKey: "", specValue: "" };
+    setSpecFields([...specFields, newfield]);
+  };
+
+  const removeSpecField = (index) => {
+    let data = [...specFields];
+    data.splice(index, 1);
+    setSpecFields(data);
+  };
+
+  const handleSpecChange = (index, e) => {
+    let data = [...specFields];
+    data[index][e.target.name] = e.target.value;
+    setSpecFields(data);
+  };
+
+  return (
+    <>
+      <button onClick={handleShow} className="btn addBtn">
+        Add product
+      </button>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <form action="" onSubmit={handleSubmit}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <strong>product</strong>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="inputsAddItem">
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="Category"
+                name="category"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="image"
+                name="image"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="name"
+                name="name"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="brand"
+                name="brand"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="price"
+                name="price"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="stock"
+                name="stock"
+              />
+              <input
+                className="inputAddItem"
+                type="text"
+                placeholder="sale"
+                name="sale"
+              />
+              <textarea
+                className="inputAddItem"
+                type="text"
+                placeholder="Description"
+                name="description"
+              />
+              <p className="text-start mt-4">specs</p>
+
+              {specFields.map((spec, index) => {
+                return (
+                  <div key={index} className="specBox d-flex flex-wrap">
+                    <input
+                      className="inputSpec mt-2"
+                      type="text"
+                      placeholder="Үзүүлэлт"
+                      name="specKey"
+                      // value={spec.key}
+                      onChange={(e) => handleSpecChange(index, e)}
+                    />
+                    <input
+                      className="inputSpec mt-2 ms-2"
+                      type="text"
+                      placeholder="Үзүүлэлтийн утга"
+                      name="specValue"
+                      // value={spec.value}
+                      onChange={(e) => handleSpecChange(index, e)}
+                    />
+                    <button
+                      className="btn btn-danger removeBtn"
+                      onClick={() => removeSpecField(index)}
+                    >
+                      -
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <div className="addBtns d-flex justify-content-between">
+              <div
+                type="button"
+                className="btn btn-secondary mx-2"
+                onClick={addSpecField}
+              >
+                add spec
+              </div>
+
+              <button type="submit" className="btn blueBtn">
+                submit
+              </button>
+            </div>
+          </Modal.Footer>
+        </form>
+      </Modal>
+    </>
   );
 }

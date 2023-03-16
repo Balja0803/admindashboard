@@ -7,84 +7,13 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-export function Products(props) {
-  const [showEdit, setShowEdit] = useState(false);
-
-  const handleClose = () => showEdit(false);
-  const handleShow = () => setEditProduct(true);
-
-  const refresh = props.refresh;
-  const setRefresh = props.setRefresh;
-  const prod = props.product;
-  const [showProduct, setShowProduct] = useState(false);
-  const [editProduct, setEditProduct] = useState(false);
-  const addProduct = () => {
-    if (showProduct) {
-      setShowProduct(false);
-    } else {
-      setShowProduct(true);
-    }
-  };
-  function deleteProduct(id) {
-    axios.delete(`http://localhost:2020/products/delete/${id}`);
-    setRefresh(!refresh);
-  }
-
-  function editProd(id) {
-    if (editProduct) {
-      setEditProduct(false);
-    } else {
-      setEditProduct(true);
-    }
-  }
-
+export function Products() {
   return (
     <div>
       <div>
-        <Button onClick={addProduct}>Add Product</Button>
-        {showProduct ? <Addproduct data={prod} /> : null}
+        <Addproduct />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Product name</th>
-            <th>Product price</th>
-            <th>Product sale</th>
-            <th>stock</th>
-            <th>Id :</th>
-            <th>Category</th>
-            <th>delete</th>
-            <th>edit</th>
-          </tr>
-        </thead>
-
-        {prod.map((item, index) => (
-          <tbody key={index}>
-            <tr className="tr">
-              <td>{item.name}</td>
-              <td>{item.price}$</td>
-              <td>{item.sale}</td>
-              <td>{item.stock}</td>
-              <td>{item.id}</td>
-              <td>{item.category}</td>
-              <td>
-                <button
-                  onClick={() => {
-                    deleteProduct(item.id);
-                  }}
-                >
-                  delete
-                </button>
-              </td>
-              <td>
-                <Button variant="primary" onClick={handleShow}>
-                  edit
-                </Button>
-              </td>
-            </tr>
-          </tbody>
-        ))}
-      </table>
+      Products
     </div>
   );
 }
