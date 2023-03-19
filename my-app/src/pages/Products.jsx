@@ -10,10 +10,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 export function Products() {
   return (
     <div>
-      <div>
-        <Addproduct />
-      </div>
-      Products
+      <Addproduct />
     </div>
   );
 }

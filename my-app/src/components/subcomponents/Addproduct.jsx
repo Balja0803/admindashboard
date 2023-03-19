@@ -1,184 +1,112 @@
 import "../../styles/addproduct.css";
 import { useState } from "react";
 import { Modal } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 import axios from "axios";
 
 export default function AddProduct() {
+  const [file, setFile] = useState();
+  const [data, setData] = useState({
+    name: "",
+    price: null,
+    specs: null,
+  });
   const [show, setShow] = useState(false);
-
-  const [specFields, setSpecFields] = useState([
-    { specKey: "", specValue: "" },
+  const [formSpecs, setFormSpecs] = useState([
+    {
+      key: "",
+      value: "",
+    },
   ]);
+
+  const handleSpecs = (index, e) => {
+    let specs = [...formSpecs];
+    specs[index][e.target.name] = e.target.value;
+    setFormSpecs(specs);
+    console.log("specs", formSpecs);
+  };
+
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+  const fileHandler = (e) => {
+    console.log(e.target.files);
+    setFile(e.target.files);
+    console.log("file", file[0]);
+  };
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    data.specs = formSpecs;
+    // const files = e.target.images.files;
+    const files = [...file, file[0], file[1], file[2]];
+    formData.append("images", files);
+    // formData.append("body", data);
+    // for (let i = 0; i < file.filelist.length; i++) {
+    //   formData.append("images", file.filelist.file[i]);
+    // }
+    console.log("data", formData);
+    axios
+      .post("http://localhost:2323/products/add", formData)
+      .then(() => console.log("posted"));
+  }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const specList = specFields.map((field) => {
-      let obj = {};
-      obj[field.specKey] = field.specValue;
-      return obj;
-    });
-
-    const newItem = {
-      name: e.target.name.value,
-      image: e.target.image.value,
-      description: e.target.description.value,
-      brand: e.target.brand.value,
-      spec: specList,
-      price: e.target.price.value,
-      stock: e.target.stock.value,
-      category: e.target.category.value,
-      sale: e.target.sale.value,
-    };
-    console.log(newItem);
-    setShow(false);
-
-    try {
-      axios
-        .post("http://localhost:2323/products/add", newItem)
-        .then(() => console.log("POST done"));
-    } catch (error) {
-      console.log(error.message);
-    }
-    window.location.reload();
-  };
-
-  const addSpecField = (e) => {
-    let newfield = { specKey: "", specValue: "" };
-    setSpecFields([...specFields, newfield]);
-  };
-
-  const removeSpecField = (index) => {
-    let data = [...specFields];
-    data.splice(index, 1);
-    setSpecFields(data);
-  };
-
-  const handleSpecChange = (index, e) => {
-    let data = [...specFields];
-    data[index][e.target.name] = e.target.value;
-    setSpecFields(data);
-  };
-
   return (
     <>
-      <button onClick={handleShow} className="btn addBtn">
+      <Button variant="primary" onClick={handleShow}>
         Add product
-      </button>
-
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <form action="" onSubmit={handleSubmit}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <strong>product</strong>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="inputsAddItem">
+      </Button>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add product</Modal.Title>
+        </Modal.Header>
+        <form
+          action="/products/add"
+          method="POST"
+          encType="multipart/form-data"
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="price"
+            placeholder="price"
+            onChange={handleChange}
+          />
+          <br />
+          <label htmlFor="specs"> Specs</label>
+          {formSpecs.map((spec, index) => (
+            <div key={index}>
               <input
-                className="inputAddItem"
                 type="text"
-                placeholder="Category"
-                name="category"
-              />
-              <input
-                className="inputAddItem"
-                type="text"
-                placeholder="image"
-                name="image"
-              />
-              <input
-                className="inputAddItem"
-                type="text"
-                placeholder="name"
-                name="name"
+                name="key"
+                onChange={(e) => handleSpecs(index, e)}
               />
               <input
-                className="inputAddItem"
                 type="text"
-                placeholder="brand"
-                name="brand"
+                name="value"
+                onChange={(e) => handleSpecs(index, e)}
               />
-              <input
-                className="inputAddItem"
-                type="text"
-                placeholder="price"
-                name="price"
-              />
-              <input
-                className="inputAddItem"
-                type="text"
-                placeholder="stock"
-                name="stock"
-              />
-              <input
-                className="inputAddItem"
-                type="text"
-                placeholder="sale"
-                name="sale"
-              />
-              <textarea
-                className="inputAddItem"
-                type="text"
-                placeholder="Description"
-                name="description"
-              />
-              <p className="text-start mt-4">specs</p>
-
-              {specFields.map((spec, index) => {
-                return (
-                  <div key={index} className="specBox d-flex flex-wrap">
-                    <input
-                      className="inputSpec mt-2"
-                      type="text"
-                      placeholder="Үзүүлэлт"
-                      name="specKey"
-                      // value={spec.key}
-                      onChange={(e) => handleSpecChange(index, e)}
-                    />
-                    <input
-                      className="inputSpec mt-2 ms-2"
-                      type="text"
-                      placeholder="Үзүүлэлтийн утга"
-                      name="specValue"
-                      // value={spec.value}
-                      onChange={(e) => handleSpecChange(index, e)}
-                    />
-                    <button
-                      className="btn btn-danger removeBtn"
-                      onClick={() => removeSpecField(index)}
-                    >
-                      -
-                    </button>
-                  </div>
-                );
-              })}
             </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="addBtns d-flex justify-content-between">
-              <div
-                type="button"
-                className="btn btn-secondary mx-2"
-                onClick={addSpecField}
-              >
-                add spec
-              </div>
+          ))}
 
-              <button type="submit" className="btn blueBtn">
-                submit
-              </button>
-            </div>
-          </Modal.Footer>
+          <input
+            type="file"
+            name="images"
+            multiple="multiple"
+            placeholder="images"
+            onChange={fileHandler}
+          />
+
+          <input type="submit" onClick={handleSubmit} />
         </form>
       </Modal>
     </>
