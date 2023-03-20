@@ -32,27 +32,48 @@ export default function AddProduct() {
   };
   const fileHandler = (e) => {
     console.log(e.target.files[0]);
+
+    // let files = Array.from(e.target.files);
     const formData = new FormData();
+
     formData.append("image", e.target.files[0]);
+
     setFile(formData);
+
+    // Object.keys(file).forEach((key) => {
+    //   if (file[key] instanceof FileList) {
+    //     formData.append(key, file[key][0], file[key][0].name);
+    //   } else {
+    //     formData.append(key, file[key]);
+    //   }
+    // });
+
+    // console.log(files);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    // let form = document.getElementById("myForm");
+    // let formData = new FormData(form);
+    // formData.append("images", e.target.files);
     // data.specs = formSpecs;
     // const files = e.target.images.files;
 
-    // axios({
+    axios({
+      method: "POST",
+      url: "http://localhost:2323/products/add",
+      data: file,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then((res) => console.log(res));
+
+    // fetch("http://localhost:2323/products/add", {
     //   method: "POST",
-    //   url: "http://localhost:2323/products/add",
-    //   data: file,
+    //   body: formData,
     // }).then((res) => console.log(res));
 
-    fetch("http://localhost:2323/products/add", {
-      method: "POST",
-      body: file,
-    }).then((res) => console.log(res));
     // formData.append("body", JSON.stringify(data));
     // formData.append("body", data);
     // for (let i = 0; i < file.filelist.length; i++) {
@@ -76,6 +97,7 @@ export default function AddProduct() {
           <Modal.Title>Add product</Modal.Title>
         </Modal.Header>
         <form
+          id="myForm"
           action="/products/add"
           method="POST"
           encType="multipart/form-data"
@@ -112,7 +134,7 @@ export default function AddProduct() {
           <input
             type="file"
             name="image"
-            placeholder="image"
+            placeholder="images"
             onChange={fileHandler}
           />
 
