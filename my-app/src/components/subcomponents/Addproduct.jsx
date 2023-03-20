@@ -31,26 +31,37 @@ export default function AddProduct() {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const fileHandler = (e) => {
-    console.log(e.target.files);
-    setFile(e.target.files);
-    console.log("file", file[0]);
+    console.log(e.target.files[0]);
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    setFile(formData);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
-    const formData = new FormData();
-    data.specs = formSpecs;
+
+    // data.specs = formSpecs;
     // const files = e.target.images.files;
-    const files = [...file, file[0], file[1], file[2]];
-    formData.append("images", files);
+
+    // axios({
+    //   method: "POST",
+    //   url: "http://localhost:2323/products/add",
+    //   data: file,
+    // }).then((res) => console.log(res));
+
+    fetch("http://localhost:2323/products/add", {
+      method: "POST",
+      body: file,
+    }).then((res) => console.log(res));
+    // formData.append("body", JSON.stringify(data));
     // formData.append("body", data);
     // for (let i = 0; i < file.filelist.length; i++) {
     //   formData.append("images", file.filelist.file[i]);
     // }
-    console.log("data", formData);
-    axios
-      .post("http://localhost:2323/products/add", formData)
-      .then(() => console.log("posted"));
+
+    // axios
+    //   .post("http://localhost:2323/products/add", formData)
+    //   .then(() => console.log("posted"));
   }
 
   const handleClose = () => setShow(false);
@@ -100,9 +111,8 @@ export default function AddProduct() {
 
           <input
             type="file"
-            name="images"
-            multiple="multiple"
-            placeholder="images"
+            name="image"
+            placeholder="image"
             onChange={fileHandler}
           />
 
