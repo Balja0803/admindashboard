@@ -1,12 +1,11 @@
 import "../../styles/addproduct.css";
-import { useState, useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import { useState } from "react";
+import { Offcanvas } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 import axios from "axios";
 
 export default function AddProduct() {
-  const [products, setProducts] = useState();
   const [file, setFile] = useState();
   const [data, setData] = useState({
     name: "",
@@ -18,6 +17,9 @@ export default function AddProduct() {
     description: "",
   });
   const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [formSpecs, setFormSpecs] = useState([
     {
       key: "",
@@ -25,16 +27,20 @@ export default function AddProduct() {
     },
   ]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:2323/products")
-      .then((res) => setProducts(res.data));
-  }, []);
   const handleSpecs = (index, e) => {
     let specs = [...formSpecs];
     specs[index][e.target.name] = e.target.value;
     setFormSpecs(specs);
     console.log("specs", formSpecs);
+  };
+  const addSpecs = () => {
+    let newSpecs = { key: "", value: "" };
+    setFormSpecs([...formSpecs, newSpecs]);
+  };
+  const removeSpec = (index) => {
+    let specs = [...formSpecs];
+    specs.splice(index, 1);
+    setFormSpecs(specs);
   };
 
   const handleChange = (e) => {
@@ -62,110 +68,101 @@ export default function AddProduct() {
     }).then((res) => console.log(res));
   }
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
         Add product
       </Button>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add product</Modal.Title>
-        </Modal.Header>
-        <form
-          id="myForm"
-          action="/products/add"
-          method="POST"
-          encType="multipart/form-data"
-        >
-          <input
-            type="text"
-            name="name"
-            placeholder="name"
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="price"
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="stock"
-            placeholder="stock"
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="sale"
-            placeholder="sale"
-            onChange={handleChange}
-          />
+      <Offcanvas show={show} onHide={handleClose} placement="end">
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title className="m-auto">Add product</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <form
+            id="myForm"
+            action="/products/add"
+            method="POST"
+            encType="multipart/form-data"
+          >
+            <input
+              type="text"
+              name="name"
+              placeholder="name"
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="price"
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="stock"
+              placeholder="stock"
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="sale"
+              placeholder="sale"
+              onChange={handleChange}
+            />
 
-          <br />
-          <label htmlFor="specs"> Specs</label>
-          {formSpecs.map((spec, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                name="key"
-                onChange={(e) => handleSpecs(index, e)}
-              />
-              <input
-                type="text"
-                name="value"
-                onChange={(e) => handleSpecs(index, e)}
-              />
-            </div>
-          ))}
-          <input
-            type="text"
-            name="brand"
-            placeholder="brand"
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="category"
-            placeholder="category"
-            onChange={handleChange}
-          />
-          <input
-            id="description"
-            type="textarea"
-            rows="2"
-            name="description"
-            placeholder="description"
-            onChange={handleChange}
-          />
-          <input
-            type="file"
-            name="image"
-            placeholder="images"
-            onChange={fileHandler}
-          />
+            <br />
+            <label htmlFor="specs"> Specs</label>
+            {formSpecs.map((spec, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  name="key"
+                  onChange={(e) => handleSpecs(index, e)}
+                />
+                <input
+                  type="text"
+                  name="value"
+                  onChange={(e) => handleSpecs(index, e)}
+                />
+                <button type="button" onClick={() => removeSpec(index)}>
+                  remove specs
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={addSpecs}>
+              add more specs ..
+            </button>
+            <br />
+            <input
+              type="text"
+              name="brand"
+              placeholder="brand"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="category"
+              placeholder="category"
+              onChange={handleChange}
+            />
+            <input
+              id="description"
+              type="textarea"
+              rows="2"
+              name="description"
+              placeholder="description"
+              onChange={handleChange}
+            />
+            <input
+              type="file"
+              name="image"
+              placeholder="images"
+              onChange={fileHandler}
+            />
 
-          <input type="submit" onClick={handleSubmit} />
-        </form>
-      </Modal>
-
-      <div>
-        {products &&
-          products.map((product, i) => (
-            <div key={i}>
-              <img
-                alt="sample"
-                src={product.image[0]}
-                width="300"
-                height="250"
-              />
-              <p>name : {product.name}</p>
-              <p>price : {product.price}</p>
-            </div>
-          ))}
-      </div>
+            <input type="submit" onClick={handleSubmit} />
+          </form>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 }

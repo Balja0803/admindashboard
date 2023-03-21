@@ -1,4 +1,13 @@
-#myform {
+form {
   margin: 0, auto;
   padding: 5px;
+  width: 100%;
+}
+input {
+  width: 35%;
+}
+button {
+  box-sizing: border-box;
+  background-color: #f1eded;
+  border-radius: 10px;
 }
