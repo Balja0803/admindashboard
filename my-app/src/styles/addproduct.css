@@ -3,10 +3,10 @@ form {
   padding: 5px;
   width: 100%;
 }
-input {
+form input {
   width: 35%;
 }
-button {
+form button {
   box-sizing: border-box;
   background-color: #f1eded;
   border-radius: 10px;
