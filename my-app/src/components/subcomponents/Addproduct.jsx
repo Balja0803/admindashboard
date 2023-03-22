@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 export default function AddProduct() {
-  const [file, setFile] = useState();
+  const [files, setFiles] = useState();
   const [data, setData] = useState({
     name: "",
     price: null,
@@ -48,14 +48,17 @@ export default function AddProduct() {
   };
 
   const fileHandler = (e) => {
-    console.log(e.target.files[0]);
-    setFile(e.target.files[0]);
+    console.log(e.target.files);
+    setFiles(e.target.files);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("image", file);
+    for (let i = 0; i < files.length; i++) {
+      formData.append("images", files[i]);
+    }
+
     formData.append("body", JSON.stringify(data));
     formData.append("specs", JSON.stringify(formSpecs));
     axios({
@@ -155,6 +158,7 @@ export default function AddProduct() {
             <input
               type="file"
               name="image"
+              multiple
               placeholder="images"
               onChange={fileHandler}
             />
