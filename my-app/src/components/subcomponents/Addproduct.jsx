@@ -1,11 +1,16 @@
 import "../../styles/addproduct.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Offcanvas } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 import axios from "axios";
 
 export default function AddProduct() {
+  const [brandId, setBrandId] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [toggle, setToggle] = useState(false);
+  const [brands, setBrands] = useState();
+  const [categories, setCategories] = useState();
   const [files, setFiles] = useState();
   const [data, setData] = useState({
     name: "",
@@ -26,6 +31,22 @@ export default function AddProduct() {
       value: "",
     },
   ]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:2323/categories")
+      .then((res) => setCategories(res.data));
+    axios
+      .get("http://localhost:2323/brands")
+      .then((res) => setBrands(res.data));
+  }, []);
+
+  const handleBrand = (index, e) => {
+    let brands = [...brandId];
+    brands[index][e.target.name] = e.target;
+    setBrandId(brands);
+    console.log(brandId);
+  };
 
   const handleSpecs = (index, e) => {
     let specs = [...formSpecs];
@@ -135,18 +156,31 @@ export default function AddProduct() {
               add more specs ..
             </button>
             <br />
-            <input
-              type="text"
-              name="brand"
-              placeholder="brand"
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="category"
-              placeholder="category"
-              onChange={handleChange}
-            />
+            <label htmlFor="categorySelect">Category</label>
+            <select
+              id="categorySelect"
+              onChange={(e) => console.log("selected")}
+            >
+              {categories &&
+                categories.map((category, i) => (
+                  <option key={i}>{category.name}</option>
+                ))}
+            </select>
+            <br />
+            <label htmlFor="brandSelect">Brand</label>
+            <select id="brandSelect" onChange={(e) => console.log("changed")}>
+              {brands &&
+                brands.map((brand, i) => (
+                  <option
+                    name="brand"
+                    onClick={(e) => handleBrand(i, e)}
+                    key={i}
+                  >
+                    {brand.name}
+                  </option>
+                ))}
+            </select>
+
             <input
               id="description"
               type="textarea"
