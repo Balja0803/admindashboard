@@ -6,8 +6,6 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 export default function AddProduct() {
-  const [brandId, setBrandId] = useState();
-  const [categoryId, setCategoryId] = useState();
   const [toggle, setToggle] = useState(false);
   const [brands, setBrands] = useState();
   const [categories, setCategories] = useState();
@@ -41,11 +39,16 @@ export default function AddProduct() {
       .then((res) => setBrands(res.data));
   }, []);
 
-  const handleBrand = (index, e) => {
-    let brands = [...brandId];
-    brands[index][e.target.name] = e.target;
-    setBrandId(brands);
-    console.log(brandId);
+  const handleBrand = (e) => {
+    const id = brands.find((brand) => brand.name === e.target.value);
+    console.log(id._id);
+    setData({ ...data, brand: id._id });
+  };
+
+  const handleCategory = (e) => {
+    const id = categories.find((category) => category.name === e.target.value);
+    console.log(id._id);
+    setData({ ...data, category: id._id });
   };
 
   const handleSpecs = (index, e) => {
@@ -75,6 +78,7 @@ export default function AddProduct() {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append("images", files[i]);
@@ -157,30 +161,30 @@ export default function AddProduct() {
             </button>
             <br />
             <label htmlFor="categorySelect">Category</label>
-            <select
-              id="categorySelect"
-              onChange={(e) => console.log("selected")}
-            >
+            <br />
+            <select id="categorySelect" onChange={(e) => handleCategory(e)}>
+              <option disabled selected value="">
+                --select from categories --
+              </option>
               {categories &&
                 categories.map((category, i) => (
-                  <option key={i}>{category.name}</option>
+                  <option id="categoryOption" key={i}>
+                    {category.name}
+                  </option>
                 ))}
             </select>
             <br />
             <label htmlFor="brandSelect">Brand</label>
-            <select id="brandSelect" onChange={(e) => console.log("changed")}>
+            <br />
+            <select id="brandSelect" onChange={(e) => handleBrand(e)}>
+              <option disabled selected value="">
+                {" "}
+                -- select from brands --{" "}
+              </option>
               {brands &&
-                brands.map((brand, i) => (
-                  <option
-                    name="brand"
-                    onClick={(e) => handleBrand(i, e)}
-                    key={i}
-                  >
-                    {brand.name}
-                  </option>
-                ))}
+                brands.map((brand, i) => <option key={i}>{brand.name}</option>)}
             </select>
-
+            <br />
             <input
               id="description"
               type="textarea"
@@ -189,6 +193,7 @@ export default function AddProduct() {
               placeholder="description"
               onChange={handleChange}
             />
+            <br />
             <input
               type="file"
               name="image"
@@ -196,6 +201,7 @@ export default function AddProduct() {
               placeholder="images"
               onChange={fileHandler}
             />
+            <br />
 
             <input type="submit" onClick={handleSubmit} />
           </form>
