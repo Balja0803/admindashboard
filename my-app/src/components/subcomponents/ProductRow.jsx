@@ -7,6 +7,7 @@ export default function ProductRow() {
   async function fetchProducts() {
     let response = await axios("http://localhost:2323/products?page=1");
     console.log(response.data);
+    setProducts(response.data);
   }
 
   useEffect(() => {
