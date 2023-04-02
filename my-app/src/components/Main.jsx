@@ -14,17 +14,19 @@ import Header from "./Header";
 
 export default function Main() {
   return (
-    <div className="main">
+    <>
       <Header />
-      <Sidebar asideMenu={asideMenu} />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/moderator" element={<Moderators />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/users" element={<Users />} />
-      </Routes>
-    </div>
+      <div className="main">
+        <Sidebar asideMenu={asideMenu} />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/moderator" element={<Moderators />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/users" element={<Users />} />
+        </Routes>
+      </div>
+    </>
   );
 }

@@ -2,8 +2,12 @@ import { useState } from "react";
 import "../styles/login.css";
 import { Card, Button, Form } from "react-bootstrap";
 import axios from "axios";
+import { useUserContext } from "../util/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useUserContext();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -27,8 +31,14 @@ export default function Login() {
         const adminToken = response.data.token;
         localStorage.clear();
         localStorage.setItem("admin_token", adminToken);
+        setIsLoggedIn(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
