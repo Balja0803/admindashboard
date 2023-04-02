@@ -10,10 +10,12 @@ import {
   Settings,
   Users,
 } from "./../pages";
+import Header from "./Header";
 
 export default function Main() {
   return (
     <div className="main">
+      <Header />
       <Sidebar asideMenu={asideMenu} />
       <Routes>
         <Route path="/" element={<Dashboard />} />

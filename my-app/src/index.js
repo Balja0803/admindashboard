@@ -5,13 +5,16 @@ import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import UserContext from "./util/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <UserContext>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </UserContext>
   </BrowserRouter>
 );
 
