@@ -6,14 +6,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import UserContext from "./util/UserContext";
+import ProductContext from "./util/ProductContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <UserContext>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <ProductContext>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </ProductContext>
     </UserContext>
   </BrowserRouter>
 );

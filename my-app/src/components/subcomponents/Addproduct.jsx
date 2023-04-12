@@ -163,7 +163,7 @@ export default function AddProduct() {
             <label htmlFor="categorySelect">Category</label>
             <br />
             <select id="categorySelect" onChange={(e) => handleCategory(e)}>
-              <option disabled selected value="default">
+              <option disabled value="default">
                 --select from categories --
               </option>
               {categories &&
